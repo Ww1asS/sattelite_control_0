@@ -1,0 +1,10 @@
+torch
+torchvision
+opencv-python
+albumentations
+numpy
+tqdm
+pyyaml
+onnx
+onnxruntime
+tensorboard
