@@ -9,35 +9,30 @@ from data.dataset import LEVIRCDDataset
 from models.unet import build_model
 from training.trainer import Trainer
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_CONFIG = BASE_DIR / "configs" / "base.yaml"
 
-
-def load_config(config_path):
+def load_config(config_path): #загрузка конфига
     config_path = Path(config_path)
     if not config_path.is_absolute():
         config_path = BASE_DIR / config_path
     with open(config_path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
-
-def get_device():
+def get_device(): #смена устройства
     if torch.cuda.is_available():
         return "cuda"
     if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
         return "mps"
     return "cpu"
 
-
-def resolve_path(path_str):
+def resolve_path(path_str): #постройка пути
     path = Path(path_str)
     if not path.is_absolute():
         path = BASE_DIR / path
     return str(path)
 
-
-def main():
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Change Detection Training")
     parser.add_argument("--config", type=str, default=str(DEFAULT_CONFIG))
     args = parser.parse_args()
@@ -54,7 +49,7 @@ def main():
     print(f"Config: {resolve_path(args.config)}")
     print(f"Data root: {config['data']['root']}")
 
-    # Датасеты
+    #Разбивка датасетов
     train_ds = LEVIRCDDataset(
         root=config["data"]["root"],
         split="train",
@@ -66,7 +61,6 @@ def main():
         img_size=config["data"]["img_size"],
     )
 
-    # DataLoader
     train_loader = DataLoader(
         train_ds,
         batch_size=config["data"]["batch_size"],
@@ -85,13 +79,13 @@ def main():
     print(f"Train samples: {len(train_ds)}")
     print(f"Val samples: {len(val_ds)}")
 
-    # Проверка одного примера
+    #Проверка одного примера
     x, mask = train_ds[0]
     print(f"Input shape: {x.shape}")        # [6, 256, 256]
     print(f"Mask shape: {mask.shape}")       # [1, 256, 256]
     print(f"Mask values: {mask.unique().tolist()}")
 
-    # Модель
+    #Модель
     model = build_model(config)
     print(f"Model: {model.__class__.__name__}")
 
@@ -104,7 +98,3 @@ def main():
         device=device,
     )
     trainer.train()
-
-
-if __name__ == "__main__":
-    main()

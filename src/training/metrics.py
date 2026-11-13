@@ -1,7 +1,7 @@
 import torch
 from torchmetrics import JaccardIndex, F1Score
 
-
+#Расчет метрик IoU и F1
 class ChangeDetectionMetrics:
 
     def __init__(self, threshold=0.5):

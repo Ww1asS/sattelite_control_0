@@ -1,6 +1,7 @@
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
+#Албуменация данных ресайз + флип + цветовое изменение
 def get_train_transforms(img_size=256):
     return A.Compose(
         [

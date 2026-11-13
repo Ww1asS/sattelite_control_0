@@ -62,7 +62,7 @@ class Trainer:
         return total_loss / len(self.train_loader)
 
     @torch.no_grad()
-    def validate(self):
+    def validate(self): #Метод валидации
         self.model.eval()
         self.metrics.reset()
         total_loss = 0.0
@@ -81,7 +81,7 @@ class Trainer:
         results["loss"] = total_loss / len(self.val_loader)
         return results
 
-    def train(self):
+    def train(self): #Цикл тренеровки
         for epoch in range(1, self.epochs + 1):
             train_loss = self.train_epoch(epoch)
             val_results = self.validate()
@@ -106,7 +106,7 @@ class Trainer:
 
         print("Training complete.")
 
-    def save_checkpoint(self, epoch, val_results):
+    def save_checkpoint(self, epoch, val_results): #Сохранение чекпоинта
         path = os.path.join(self.checkpoint_dir, f"best_model_epoch_{epoch}.pth")
         torch.save(
             {

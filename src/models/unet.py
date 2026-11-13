@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import segmentation_models_pytorch as smp
 
-
+#Основа resnet50 SiamDiff
 class SiamDiffUNet(nn.Module):
 
     def __init__(self, encoder_name="resnet50", pretrained=True, in_channels=3, num_classes=1):

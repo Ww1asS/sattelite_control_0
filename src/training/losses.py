@@ -1,7 +1,7 @@
 import torch.nn as nn
 import segmentation_models_pytorch as smp
 
-
+#Loss функция BCE + Dice
 class CombinedLoss(nn.Module):
 
     def __init__(self, dice_weight=1.0, bce_weight=1.0):

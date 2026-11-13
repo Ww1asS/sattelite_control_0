@@ -7,7 +7,7 @@ from torch.utils.data import Dataset
 
 from .transforms import get_train_transforms, get_val_transforms
 
-
+#Чтение изображения
 def read_image_unicode(path, flags):
     data = np.fromfile(path, dtype=np.uint8)
     if data.size == 0:
@@ -67,12 +67,10 @@ class LEVIRCDDataset(Dataset):
 
         augmented = self.transform(image=img_A, image2=img_B, mask=mask)
 
-        img_A_t = augmented["image"]       # [3, H, W]
-        img_B_t = augmented["image2"]      # [3, H, W]
-        mask_t = augmented["mask"].unsqueeze(0).float()  # [1, H, W]
+        img_A_t = augmented["image"]       #[3, H, W]
+        img_B_t = augmented["image2"]      #[3, H, W]
+        mask_t = augmented["mask"].unsqueeze(0).float()  #[1, H, W]
 
-        # Склеиваем два изображения по каналам: [6, H, W]
-        # Модель сама разделит это на два [3, H, W] тензора
-        x = torch.cat([img_A_t, img_B_t], dim=0)
+        x = torch.cat([img_A_t, img_B_t], dim=0) #[6, H, W]
 
         return x, mask_t
